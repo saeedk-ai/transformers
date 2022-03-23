@@ -324,6 +324,7 @@ def squad_convert_examples_to_features(
     padding_strategy="max_length",
     return_dataset=False,
     threads=1,
+    chunksize=32,
     tqdm_enabled=True,
 ):
     """
@@ -341,6 +342,7 @@ def squad_convert_examples_to_features(
         return_dataset: Default False. Either 'pt' or 'tf'.
             if 'pt': returns a torch.data.TensorDataset, if 'tf': returns a tf.data.Dataset
         threads: multiple processing threads.
+        chunksize: size of the chunks to perform the multiprocessing
 
 
     Returns:
@@ -376,7 +378,7 @@ def squad_convert_examples_to_features(
         )
         features = list(
             tqdm(
-                p.imap(annotate_, examples, chunksize=32),
+                p.imap(annotate_, examples, chunksize=chunksize),
                 total=len(examples),
                 desc="convert squad examples to features",
                 disable=not tqdm_enabled,
