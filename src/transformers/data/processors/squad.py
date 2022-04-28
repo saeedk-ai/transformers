@@ -629,7 +629,7 @@ class SquadProcessor(DataProcessor):
             input_data = json.load(reader)["data"]
         return self._create_examples(input_data, "train")
 
-    def get_dev_examples(self, data_dir, filename=None):
+    def get_dev_examples(self, data_dir=None, filename=None, dict_input=False):
         """
         Returns the evaluation example from the data directory.
 
@@ -644,10 +644,13 @@ class SquadProcessor(DataProcessor):
         if self.dev_file is None:
             raise ValueError("SquadProcessor should be instantiated via SquadV1Processor or SquadV2Processor")
 
-        with open(
-            os.path.join(data_dir, self.dev_file if filename is None else filename), "r", encoding="utf-8"
-        ) as reader:
-            input_data = json.load(reader)["data"]
+        if dict_input:
+            input_data = dict_input["data"]
+        else:
+            with open(
+                os.path.join(data_dir, self.dev_file if filename is None else filename), "r", encoding="utf-8"
+            ) as reader:
+                input_data = json.load(reader)["data"]
         return self._create_examples(input_data, "dev")
 
     def _create_examples(self, input_data, set_type):
