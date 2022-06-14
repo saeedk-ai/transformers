@@ -629,7 +629,7 @@ class SquadProcessor(DataProcessor):
             input_data = json.load(reader)["data"]
         return self._create_examples(input_data, "train")
 
-    def get_dev_examples(self, data_dir=None, filename=None, dict_input=False):
+    def get_dev_examples(self, data_dir=None, filename=None, dict_input=None):
         """
         Returns the evaluation example from the data directory.
 
